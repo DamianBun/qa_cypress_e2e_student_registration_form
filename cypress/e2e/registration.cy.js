@@ -9,8 +9,7 @@ const {
   lastName,
   email,
   mobileNumber,
-  currentAddress,
-  birthDate
+  currentAddress
 } = generateUser();
 
 describe('student Registration page', () => {
@@ -37,16 +36,16 @@ describe('student Registration page', () => {
     cy.get('#dateOfBirthInput')
       .click();
 
-    cy.get('[class="react-datepicker__year-select"]')
+    cy.get('.react-datepicker__year-select')
       .select('1997');
 
-    cy.get('[class="react-datepicker__month-select"]')
+    cy.get('.react-datepicker__month-select')
       .select('May');
 
-    cy.get('[class="react-datepicker__day react-datepicker__day--006"]')
+    cy.get(`.react-datepicker__day--006:not(.react-datepicker__day--outside-month)`)
       .click();
 
-    cy.get('[id="subjectsContainer"]')
+    cy.get('#subjectsInput')
       .type(`History{enter}`);
 
     cy.get('label[for="hobbies-checkbox-1"]')
@@ -55,10 +54,10 @@ describe('student Registration page', () => {
     cy.get('[placeholder="Current Address"]')
       .type(currentAddress);
 
-    cy.get('[id="state"]')
-      .type(`NCR{enter}`);
+    cy.get('#state')
+      .type('NCR{enter}');
 
-    cy.get('[id="city"]')
+    cy.get('#city')
       .type(`Delhi{enter}`);
 
     cy.get('[id="uploadPicture"]')
@@ -73,34 +72,49 @@ describe('student Registration page', () => {
     cy.contains('div', 'Thanks for submitting the form')
       .should('be.visible');
 
-    cy.contains('.modal-body', firstName)
-      .should('be.visible');
+    cy.contains('tr', 'Student Name')
+      .find('td')
+      .eq(1)
+      .should('have.text', `${firstName} ${lastName}`);
 
-    cy.contains('.modal-body', lastName)
-      .should('be.visible');
+    cy.contains('tr', 'Student Email')
+      .find('td')
+      .eq(1)
+      .should('have.text', email);
 
-    cy.contains('.modal-body', email)
-      .should('be.visible');
+    cy.contains('tr', 'Gender')
+      .find('td')
+      .eq(1)
+      .should('have.text', 'Male');
 
-    cy.contains('.modal-body', 'Male')
-      .should('be.visible');
+    cy.contains('tr', 'Mobile')
+      .find('td')
+      .eq(1)
+      .should('have.text', mobileNumber);
 
-    cy.contains('.modal-body', mobileNumber)
-      .should('be.visible');
+    cy.contains('tr', 'Date of Birth')
+      .find('td')
+      .eq(1)
+      .should('have.text', '06 May,1997');
 
-    cy.contains('.modal-body', birthDate)
-      .should('be.visible');
+    cy.contains('tr', 'Subjects')
+      .find('td')
+      .eq(1)
+      .should('have.text', 'History');
 
-    cy.contains('.modal-body', 'History')
-      .should('be.visible');
+    cy.contains('tr', 'Hobbies')
+      .find('td')
+      .eq(1)
+      .should('have.text', 'Sports');
 
-    cy.contains('.modal-body', 'Sports')
-      .should('be.visible');
+    cy.contains('tr', 'Address')
+      .find('td')
+      .eq(1)
+      .should('have.text', 'Parzęczewo');
 
-    cy.contains('.modal-body', 'Parzęczewo')
-      .should('be.visible');
-
-    cy.contains('.modal-body', 'NCR Delhi')
-      .should('be.visible');
+    cy.contains('tr', 'State and City')
+      .find('td')
+      .eq(1)
+      .should('have.text', `NCR Delhi`);
   });
 });
